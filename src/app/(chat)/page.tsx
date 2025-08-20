@@ -34,6 +34,7 @@ import { Model } from "@/lib/types";
 
 const models: Model[] = [
   { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash", provider: "google" },
+  { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro", provider: "google" },
   { id: "gpt-5-mini", name: "GPT-5-mini", provider: "openai" },
 
 ];
@@ -49,7 +50,6 @@ export default function ChatPage() {
       return;
     }
     setStatus("submitted");
-    setStatus("streaming");
 
     sendMessage({ text: text, metadata: model });
 
@@ -86,6 +86,7 @@ export default function ChatPage() {
                 <ConversationContent>
                   {messages.map((message) => (
                     <Message from={message.role} key={message.id}>
+
                       <MessageContent>
                         {message.parts.map((part, i) => {
                           switch (part.type) {
@@ -121,7 +122,7 @@ export default function ChatPage() {
                         <MicIcon size={16} />
                         <span>Voice</span>
                       </PromptInputButton>
-                      <PromptInputModelSelect onValueChange={(id) => {
+                      <PromptInputModelSelect value={model.id} onValueChange={(id) => {
                         const selected = models.find((m) => m.id === id);
                         if (selected) setModel(selected);
                       }}>
