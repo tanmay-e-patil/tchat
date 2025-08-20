@@ -28,14 +28,18 @@ import { FormEventHandler, useState } from "react";
 import { useChat } from '@ai-sdk/react';
 import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ui/shadcn-io/ai/conversation";
 import { Message, MessageContent } from "@/components/ui/shadcn-io/ai/message";
+import { Response } from "@/components/ui/shadcn-io/ai/response";
+import { Model } from "@/lib/types";
 
-const models = [
-  { id: "gpt-4o", name: "GPT-5-mini" },
+
+const models: Model[] = [
+  { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash", provider: "google" },
+  { id: "gpt-5-mini", name: "GPT-5-mini", provider: "openai" },
 
 ];
 export default function ChatPage() {
   const [text, setText] = useState<string>("");
-  const [model, setModel] = useState<string>(models[0].id);
+  const [model, setModel] = useState<Model>(models[0]);
   const [status, setStatus] = useState<
     "submitted" | "streaming" | "ready" | "error"
   >("ready");
@@ -45,15 +49,10 @@ export default function ChatPage() {
       return;
     }
     setStatus("submitted");
-    // setTimeout(() => {
-    //   setStatus("streaming");
-    // }, 200);
+    setStatus("streaming");
 
-    sendMessage({ text: text });
-    // setTimeout(() => {
-    //   setStatus("ready");
-    //   setText("");
-    // }, 2000);
+    sendMessage({ text: text, metadata: model });
+
     setStatus("ready");
     setText("");
   };
@@ -62,19 +61,15 @@ export default function ChatPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="flex flex-col  w-full">
-        <SidebarInset>
-          <header className="flex justify-end items-center p-2 gap-2 h-16">
+      <div className="flex flex-col w-full">
+        <SidebarInset className="flex flex-col w-full">
+          <header className="flex justify-end items-center p-2 gap-2 h-16 shrink-0 border-b">
             <SidebarTrigger className="size-4" />
-
             <div className="flex items-center justify-end gap-2 w-full">
               <ModeToggle />
               <SignedOut>
                 <Link
-                  className={buttonVariants({
-                    size: "sm",
-                    variant: "ghost",
-                  })}
+                  className={buttonVariants({ size: "sm", variant: "ghost" })}
                   href={"/login"}
                 >
                   <Settings2 className="size-4" />
@@ -85,69 +80,71 @@ export default function ChatPage() {
               </SignedIn>
             </div>
           </header>
-
-          <div className="h-[calc(100vh-8rem)]">
-            <Conversation >
-              <ConversationContent>
-                {messages.map((message) => (
-                  <Message from={message.role} key={message.id}>
-                    <MessageContent>
-                      {message.parts.map((part, i) => {
-                        switch (part.type) {
-                          case 'text':
-                            return <div key={`${message.id}-${i}`}>{part.text}</div>;
-                        }
-                      })}
-                    </MessageContent>
-                  </Message>
-                ))}
-              </ConversationContent>
-              <ConversationScrollButton />
-            </Conversation>
-          </div>
-          <div className="flex justify-center items-center relative overflow-y-scroll">
-            <div className="p-8 w-3xl fixed bottom-0">
-              <PromptInput onSubmit={handleSubmit}>
-                <PromptInputTextarea
-                  onChange={(e) => setText(e.target.value)}
-                  value={text}
-                  placeholder="Type your message..."
-                />
-                <PromptInputToolbar>
-                  <PromptInputTools>
-                    <PromptInputButton>
-                      <PaperclipIcon size={16} />
-                    </PromptInputButton>
-                    <PromptInputButton>
-                      <MicIcon size={16} />
-                      <span>Voice</span>
-                    </PromptInputButton>
-                    <PromptInputModelSelect
-                      onValueChange={setModel}
-                      value={model}
-                    >
-                      <PromptInputModelSelectTrigger>
-                        <PromptInputModelSelectValue />
-                      </PromptInputModelSelectTrigger>
-                      <PromptInputModelSelectContent>
-                        {models.map((model) => (
-                          <PromptInputModelSelectItem
-                            key={model.id}
-                            value={model.id}
-                          >
-                            {model.name}
-                          </PromptInputModelSelectItem>
-                        ))}
-                      </PromptInputModelSelectContent>
-                    </PromptInputModelSelect>
-                  </PromptInputTools>
-                  <PromptInputSubmit disabled={!text} status={status} />
-                </PromptInputToolbar>
-              </PromptInput>
+          <div className="flex flex-col h-[calc(100vh-4rem)]">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-6">
+              <Conversation>
+                <ConversationContent>
+                  {messages.map((message) => (
+                    <Message from={message.role} key={message.id}>
+                      <MessageContent>
+                        {message.parts.map((part, i) => {
+                          switch (part.type) {
+                            case "text":
+                              return (
+                                <Response key={`${message.id}-${i}`}>
+                                  {part.text}
+                                </Response>
+                              );
+                          }
+                        })}
+                      </MessageContent>
+                    </Message>
+                  ))}
+                </ConversationContent>
+                <ConversationScrollButton />
+              </Conversation>
+            </div>
+            <div className="p-4 border-t bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <div className="max-w-3xl mx-auto">
+                <PromptInput onSubmit={handleSubmit}>
+                  <PromptInputTextarea
+                    onChange={(e) => setText(e.target.value)}
+                    value={text}
+                    placeholder="Type your message..."
+                  />
+                  <PromptInputToolbar>
+                    <PromptInputTools>
+                      <PromptInputButton>
+                        <PaperclipIcon size={16} />
+                      </PromptInputButton>
+                      <PromptInputButton>
+                        <MicIcon size={16} />
+                        <span>Voice</span>
+                      </PromptInputButton>
+                      <PromptInputModelSelect onValueChange={(id) => {
+                        const selected = models.find((m) => m.id === id);
+                        if (selected) setModel(selected);
+                      }}>
+                        <PromptInputModelSelectTrigger>
+                          <PromptInputModelSelectValue />
+                        </PromptInputModelSelectTrigger>
+                        <PromptInputModelSelectContent>
+                          {models.map((model) => (
+                            <PromptInputModelSelectItem key={model.id} value={model.id} onClick={() => setModel(model)}>
+                              {model.name}
+                            </PromptInputModelSelectItem>
+                          ))}
+                        </PromptInputModelSelectContent>
+                      </PromptInputModelSelect>
+                    </PromptInputTools>
+                    <PromptInputSubmit disabled={!text} status={status} />
+                  </PromptInputToolbar>
+                </PromptInput>
+              </div>
             </div>
           </div>
         </SidebarInset>
-      </div>
-    </SidebarProvider>
+      </div >
+    </SidebarProvider >
   );
 }
