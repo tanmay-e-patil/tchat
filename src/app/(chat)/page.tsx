@@ -25,10 +25,13 @@ import { SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import { MicIcon, PaperclipIcon, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { FormEventHandler, useState } from "react";
+import { useChat } from '@ai-sdk/react';
+import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ui/shadcn-io/ai/conversation";
+import { Message, MessageContent } from "@/components/ui/shadcn-io/ai/message";
+
 const models = [
-  { id: "gpt-4o", name: "GPT-4o" },
-  { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet" },
-  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro" },
+  { id: "gpt-4o", name: "GPT-5-mini" },
+
 ];
 export default function ChatPage() {
   const [text, setText] = useState<string>("");
@@ -42,14 +45,20 @@ export default function ChatPage() {
       return;
     }
     setStatus("submitted");
-    setTimeout(() => {
-      setStatus("streaming");
-    }, 200);
-    setTimeout(() => {
-      setStatus("ready");
-      setText("");
-    }, 2000);
+    // setTimeout(() => {
+    //   setStatus("streaming");
+    // }, 200);
+
+    sendMessage({ text: text });
+    // setTimeout(() => {
+    //   setStatus("ready");
+    //   setText("");
+    // }, 2000);
+    setStatus("ready");
+    setText("");
   };
+
+  const { messages, sendMessage } = useChat();
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -76,6 +85,26 @@ export default function ChatPage() {
               </SignedIn>
             </div>
           </header>
+
+          <div className="h-[calc(100vh-8rem)]">
+            <Conversation >
+              <ConversationContent>
+                {messages.map((message) => (
+                  <Message from={message.role} key={message.id}>
+                    <MessageContent>
+                      {message.parts.map((part, i) => {
+                        switch (part.type) {
+                          case 'text':
+                            return <div key={`${message.id}-${i}`}>{part.text}</div>;
+                        }
+                      })}
+                    </MessageContent>
+                  </Message>
+                ))}
+              </ConversationContent>
+              <ConversationScrollButton />
+            </Conversation>
+          </div>
           <div className="flex justify-center items-center relative overflow-y-scroll">
             <div className="p-8 w-3xl fixed bottom-0">
               <PromptInput onSubmit={handleSubmit}>
