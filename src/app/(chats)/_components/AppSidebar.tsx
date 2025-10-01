@@ -128,7 +128,7 @@ export function AppSidebar({
             {chats.map((item) => (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton asChild>
-                  <a href={`/chat/${item.id}`}>
+                  <Link href={`/chat/${item.id}`}>
                     {isUpdating === item.id ? (
                       <Skeleton className="h-4 w-full" />
                     ) : (
@@ -141,7 +141,7 @@ export function AppSidebar({
                         </TooltipContent>
                       </Tooltip>
                     )}
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
