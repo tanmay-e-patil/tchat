@@ -42,6 +42,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface AppSidebarProps {
   session: Session | null;
@@ -97,11 +98,11 @@ export function AppSidebar({
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" asChild>
                 <a href="#">
-                  <div className="bg-red-700 text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <div className="bg-blue-700 text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                     <Command className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">The Red Mind</span>
+                    <span className="truncate font-medium">TChat</span>
                     <span className="truncate text-xs">Free Plan</span>
                   </div>
                 </a>
@@ -116,11 +117,11 @@ export function AppSidebar({
                 asChild
                 size="lg"
                 variant="outline"
-                className="flex items-center justify-center text-center text-foreground border mb-2"
+                className="flex items-center justify-center text-center text-foreground border mb-2 bg-blue-700 hover:bg-blue-700/80"
               >
-                <a href={`/chat/new`}>
+                <Link href={`/chat/new`}>
                   <span>New Chat</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SearchForm className="mb-4" />
