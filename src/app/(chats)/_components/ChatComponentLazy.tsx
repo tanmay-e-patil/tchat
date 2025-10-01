@@ -1,7 +1,7 @@
 "use client";
 
 import { lazy, Suspense, useState, useEffect } from "react";
-import { DrizzleMessages } from "../../../lib/db/schema";
+import { DrizzleMessages } from "../../../../schema";
 import { ChatSkeleton } from "@/components/ui/chat-skeleton";
 
 // Lazy load the heavy ChatComponent

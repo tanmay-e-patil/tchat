@@ -5,7 +5,7 @@ import { ModeToggle } from "@/components/theme-toggle";
 import { db } from "@/lib/db/db";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { chats } from "../../../../lib/db/schema";
+import { chats } from "@/lib/db/schema";
 import { AppSidebar } from "../../_components/AppSidebar";
 import ChatComponentLazy from "../../_components/ChatComponentLazy";
 import { ChatProvider } from "@/contexts/ChatContext";

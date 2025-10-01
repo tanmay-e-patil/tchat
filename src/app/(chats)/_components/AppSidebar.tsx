@@ -26,7 +26,7 @@ import {
 import { SearchForm } from "./SearchForm";
 import { LoginButton } from "@/app/(chats)/_components/LoginButton";
 import { Session } from "@/lib/auth";
-import { DrizzleChat } from "../../../lib/db/schema";
+import { DrizzleChat } from "../../../../schema";
 import { useChatContext } from "@/contexts/ChatContext";
 import {
   DropdownMenu,

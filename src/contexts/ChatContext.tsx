@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useCallback } from "react";
-import { DrizzleChat } from "../lib/db/schema";
+import { DrizzleChat } from "../../schema";
 
 interface ChatContextType {
   chats: DrizzleChat[];
