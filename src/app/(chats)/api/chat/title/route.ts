@@ -1,7 +1,7 @@
-import { db } from "@/db";
+import { db } from "@/lib/db/db";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
-import { chats, messages as _messages } from "@/../schema";
+import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -60,7 +60,6 @@ Use an active voice.
 Be concise and clear.
 
 Do not use punctuation at the end of the title.`;
-
 
   try {
     const result = await generateText({

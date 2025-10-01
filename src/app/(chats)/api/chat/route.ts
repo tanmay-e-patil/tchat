@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { db } from "@/lib/db/db";
 import { google } from "@ai-sdk/google";
 import {
   streamText,
@@ -6,7 +6,7 @@ import {
   convertToModelMessages,
   smoothStream,
 } from "ai";
-import { chats, messages as _messages } from "@/../schema";
+import { chats, messages as _messages } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 // Allow streaming responses up to 30 seconds

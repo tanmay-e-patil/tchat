@@ -1,7 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { db } from "@/db";
-import { chats } from "../../../schema";
+import { db } from "@/lib/db/db";
+import { chats } from "../../lib/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { desc } from "drizzle-orm";
