@@ -4,13 +4,13 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "The Red Mind",
+  title: "TChat",
   description:
-    "The Red Mind is a chatbot that uses the power of the internet to answer your questions about communism.",
-  keywords: ["communism", "chatbot", "AI", "political discussion"],
-  authors: [{ name: "The Red Mind" }],
-  creator: "The Red Mind",
-  publisher: "The Red Mind",
+    "TChat is an AI-powered chatbot that helps you with conversations and answers your questions.",
+  keywords: ["chatbot", "AI", "conversation", "assistant"],
+  authors: [{ name: "TChat" }],
+  creator: "TChat",
+  publisher: "TChat",
   formatDetection: {
     email: false,
     address: false,
@@ -20,17 +20,17 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
   ),
   openGraph: {
-    title: "The Red Mind",
+    title: "TChat",
     description:
-      "The Red Mind is a chatbot that uses the power of the internet to answer your questions about communism.",
+      "TChat is an AI-powered chatbot that helps you with conversations and answers your questions.",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Red Mind",
+    title: "TChat",
     description:
-      "The Red Mind is a chatbot that uses the power of the internet to answer your questions about communism.",
+      "TChat is an AI-powered chatbot that helps you with conversations and answers your questions.",
   },
   robots: {
     index: true,

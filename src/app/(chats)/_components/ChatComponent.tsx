@@ -44,7 +44,7 @@ import {
   ReasoningTrigger,
 } from "@/components/ai-elements/reasoning";
 import { TypingIndicator } from "@/components/ui/typing-indicator";
-import { DrizzleMessages } from "../../../../schema";
+import { DrizzleMessages } from "@/lib/db/schema";
 import { useChatContext } from "@/contexts/ChatContext";
 
 const models = [
