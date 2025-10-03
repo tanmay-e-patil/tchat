@@ -1,0 +1,40 @@
+name: Drizzle Migrations
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "drizzle.config.ts"
+      - "src/lib/db/schema.ts"
+      - "drizzle/**"
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "latest"
+
+      - name: Install dependencies (bun)
+        run: bun install --frozen-lockfile
+
+      # If you use Infisical for env injection in CI, uncomment:
+      # - name: Inject env with Infisical and run migrations (bun)
+      #   run: |
+      #     bunx infisical run -- bunx drizzle-kit migrate
+      #   env:
+      #     INFISICAL_TOKEN: ${{ secrets.INFISICAL_TOKEN }}
+
+      - name: Run Drizzle migrations (bun)
+        run: bunx drizzle-kit migrate
