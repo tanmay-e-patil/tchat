@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,8 +16,55 @@ interface ProfileProps {
 }
 
 export default function Profile(props: ProfileProps) {
+  const [used, setUsed] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(20);
+  const [resetAt, setResetAt] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let isActive = true;
+    const loadUsage = async () => {
+      try {
+        const res = await fetch("/api/usage", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!isActive) return;
+        setUsed(Number(data.used ?? 0));
+        setLimit(Number(data.limit ?? 20));
+        setResetAt(String(data.resetAt ?? null));
+      } catch (e) {
+        // ignore
+      } finally {
+        if (isActive) setLoading(false);
+      }
+    };
+    loadUsage();
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
   const profileImageUrl =
     props.session?.user.image?.replace("s96-c", "s384-c") ?? "";
+
+  const remaining = Math.max(0, limit - used);
+  const percentage = Math.min(100, Math.max(0, (used / (limit || 1)) * 100));
+
+  const formatResetDescription = () => {
+    if (!resetAt) return "Resets daily at 5:00 PM";
+    const resetDate = new Date(resetAt);
+    const now = new Date();
+    const isSameDay =
+      resetDate.getFullYear() === now.getFullYear() &&
+      resetDate.getMonth() === now.getMonth() &&
+      resetDate.getDate() === now.getDate();
+    const dayLabel = isSameDay ? "today" : "tomorrow";
+    const timeStr = resetDate.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    return `Resets ${dayLabel} at ${timeStr}`;
+  };
   return (
     <div className="md:max-w-[20%] sm:w-full mx-8">
       <div className="flex flex-col justify-center items-center">
@@ -39,16 +87,18 @@ export default function Profile(props: ProfileProps) {
         <Card>
           <CardHeader>
             <CardTitle>Message Usage</CardTitle>
-            <CardDescription>Resets today at 4:59 PM</CardDescription>
+            <CardDescription>{formatResetDescription()}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between text-sm mb-2">
               <span className="text-muted-foreground">Standard</span>
-              <span className="font-medium">10/20</span>
+              <span className="font-medium">
+                {loading ? "—/—" : `${used}/${limit}`}
+              </span>
             </div>
-            <Progress value={(10 / 20) * 100} className="h-2" />
+            <Progress value={loading ? 0 : percentage} className="h-2" />
             <div className="mt-2 text-xs text-muted-foreground">
-              20 messages remaining
+              {loading ? "Loading usage..." : `${remaining} messages remaining`}
             </div>
             <div className="mt-4 text-xs text-muted-foreground">
               Each tool call (e.g. search grounding) used in a reply consumes an

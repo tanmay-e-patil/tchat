@@ -54,6 +54,7 @@ const models = [
   },
 ];
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface ChatComponentProps {
   userId: string;
@@ -65,7 +66,8 @@ const ChatComponent = (props: ChatComponentProps) => {
   const [input, setInput] = useState("");
   const [model, setModel] = useState<string>(models[0].value);
   const [webSearch, setWebSearch] = useState(false);
-  const { messages, sendMessage, status, setMessages } = useChat();
+  const { messages, sendMessage, status, setMessages, error } = useChat();
+  const [limitError, setLimitError] = useState<string | null>(null);
   const [lastUserMessage, setLastUserMessage] = useState<string | null>(null);
   const { addChat } = useChatContext();
 
@@ -108,6 +110,29 @@ const ChatComponent = (props: ChatComponentProps) => {
     }
   }, [messages, props.chatId, props.userId, props.initialMessages, addChat]);
 
+  // Monitor for usage limit errors
+  useEffect(() => {
+    if (error) {
+      const errorMessage = error.message || error.toString();
+      if (
+        errorMessage.includes("USAGE_LIMIT_EXCEEDED") ||
+        errorMessage.toLowerCase().includes("limit") ||
+        errorMessage.includes("Free plan limit exceeded")
+      ) {
+        // setLimitError(
+        //   "Free plan limit exceeded. Please upgrade to Pro for more messages."
+        // );
+        console.log(error.cause);
+        toast.error(
+          "Free plan limit exceeded. Please upgrade to Pro for more messages.",
+          {
+            duration: 6000,
+          }
+        );
+      }
+    }
+  }, [error]);
+
   const handleSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
     const hasAttachments = Boolean(message.files?.length);
@@ -115,7 +140,7 @@ const ChatComponent = (props: ChatComponentProps) => {
     if (!(hasText || hasAttachments)) {
       return;
     }
-
+    setLimitError(null);
     sendMessage(
       {
         text: message.text || "Sent with attachments",
@@ -151,6 +176,9 @@ const ChatComponent = (props: ChatComponentProps) => {
       <div className="flex-1 overflow-hidden">
         <Conversation className="h-full">
           <ConversationContent className="max-w-[80%] mx-auto">
+            {/* {limitError && (
+              <div className="mb-3 text-sm text-red-600">{limitError}</div>
+            )} */}
             {messages.map((message) => (
               <div key={message.id}>
                 {message.role === "assistant" &&
