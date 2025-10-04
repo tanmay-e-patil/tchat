@@ -119,7 +119,6 @@ const ChatComponent = (props: ChatComponentProps) => {
         errorMessage.toLowerCase().includes("limit") ||
         errorMessage.includes("Free plan limit exceeded")
       ) {
-
         toast.error(
           "Free plan limit exceeded. Please upgrade to Pro for more messages.",
           {
@@ -276,78 +275,77 @@ const ChatComponent = (props: ChatComponentProps) => {
               value={input}
             />
           </PromptInputBody>
-          <PromptInputToolbar className="flex items-center justify-evenly">
-            <PromptInputActionMenu>
-              <PromptInputActionMenuTrigger />
-              <PromptInputActionMenuContent>
-                <PromptInputActionAddAttachments />
-              </PromptInputActionMenuContent>
-            </PromptInputActionMenu>
-
-            <PromptInputButton
-              variant={webSearch ? "default" : "ghost"}
-              onClick={() => setWebSearch(!webSearch)}
-              className="hidden sm:flex"
-            >
-              <GlobeIcon size={16} />
-              <span>Search</span>
-            </PromptInputButton>
-
-            <PromptInputButton
-              variant={webSearch ? "default" : "ghost"}
-              onClick={() => setWebSearch(!webSearch)}
-              className="sm:hidden"
-            >
-              <GlobeIcon size={16} />
-            </PromptInputButton>
-
-            <div className="hidden sm:block">
-              <PromptInputModelSelect
-                onValueChange={(value) => {
-                  setModel(value);
-                }}
-                value={model}
+          <PromptInputToolbar className="flex items-center justify-evenly sm:justify-between">
+            <PromptInputTools className="flex items-center gap-1 min-w-0 flex-1 sm:flex-1">
+              <PromptInputActionMenu>
+                <PromptInputActionMenuTrigger />
+                <PromptInputActionMenuContent>
+                  <PromptInputActionAddAttachments />
+                </PromptInputActionMenuContent>
+              </PromptInputActionMenu>
+              <PromptInputButton
+                variant={webSearch ? "default" : "ghost"}
+                onClick={() => setWebSearch(!webSearch)}
+                className="hidden sm:flex"
               >
-                <PromptInputModelSelectTrigger>
-                  <PromptInputModelSelectValue />
-                </PromptInputModelSelectTrigger>
-                <PromptInputModelSelectContent>
-                  {models.map((model) => (
-                    <PromptInputModelSelectItem
-                      key={model.value}
-                      value={model.value}
-                    >
-                      {model.name}
-                    </PromptInputModelSelectItem>
-                  ))}
-                </PromptInputModelSelectContent>
-              </PromptInputModelSelect>
-            </div>
-
-            <div className="sm:hidden">
-              <PromptInputModelSelect
-                onValueChange={(value) => {
-                  setModel(value);
-                }}
-                value={model}
+                <GlobeIcon size={16} />
+                <span>Search</span>
+              </PromptInputButton>
+              <div className="hidden sm:block">
+                <PromptInputModelSelect
+                  onValueChange={(value) => {
+                    setModel(value);
+                  }}
+                  value={model}
+                >
+                  <PromptInputModelSelectTrigger>
+                    <PromptInputModelSelectValue />
+                  </PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectContent>
+                    {models.map((model) => (
+                      <PromptInputModelSelectItem
+                        key={model.value}
+                        value={model.value}
+                      >
+                        {model.name}
+                      </PromptInputModelSelectItem>
+                    ))}
+                  </PromptInputModelSelectContent>
+                </PromptInputModelSelect>
+              </div>
+            </PromptInputTools>
+            <div className="flex items-center gap-1 sm:gap-1">
+              <PromptInputButton
+                variant={webSearch ? "default" : "ghost"}
+                onClick={() => setWebSearch(!webSearch)}
+                className="sm:hidden"
               >
-                <PromptInputModelSelectTrigger>
-                  <PromptInputModelSelectValue />
-                </PromptInputModelSelectTrigger>
-                <PromptInputModelSelectContent>
-                  {models.map((model) => (
-                    <PromptInputModelSelectItem
-                      key={model.value}
-                      value={model.value}
-                    >
-                      {model.name}
-                    </PromptInputModelSelectItem>
-                  ))}
-                </PromptInputModelSelectContent>
-              </PromptInputModelSelect>
+                <GlobeIcon size={16} />
+              </PromptInputButton>
+              <div className="sm:hidden">
+                <PromptInputModelSelect
+                  onValueChange={(value) => {
+                    setModel(value);
+                  }}
+                  value={model}
+                >
+                  <PromptInputModelSelectTrigger>
+                    <PromptInputModelSelectValue />
+                  </PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectContent>
+                    {models.map((model) => (
+                      <PromptInputModelSelectItem
+                        key={model.value}
+                        value={model.value}
+                      >
+                        {model.name}
+                      </PromptInputModelSelectItem>
+                    ))}
+                  </PromptInputModelSelectContent>
+                </PromptInputModelSelect>
+              </div>
+              <PromptInputSubmit disabled={!input && !status} status={status} />
             </div>
-
-            <PromptInputSubmit disabled={!input && !status} status={status} />
           </PromptInputToolbar>
         </PromptInput>
       </div>
