@@ -263,7 +263,7 @@ const ChatComponent = (props: ChatComponentProps) => {
         </Conversation>
       </div>
 
-      <div className="flex-shrink-0 p-6">
+      <div className="flex-shrink-0 p-3 sm:p-6">
         <PromptInput
           onSubmit={handleSubmit}
           className="max-w-4xl mx-auto"
@@ -279,21 +279,32 @@ const ChatComponent = (props: ChatComponentProps) => {
               value={input}
             />
           </PromptInputBody>
-          <PromptInputToolbar>
-            <PromptInputTools>
-              <PromptInputActionMenu>
-                <PromptInputActionMenuTrigger />
-                <PromptInputActionMenuContent>
-                  <PromptInputActionAddAttachments />
-                </PromptInputActionMenuContent>
-              </PromptInputActionMenu>
-              <PromptInputButton
-                variant={webSearch ? "default" : "ghost"}
-                onClick={() => setWebSearch(!webSearch)}
-              >
-                <GlobeIcon size={16} />
-                <span>Search</span>
-              </PromptInputButton>
+          <PromptInputToolbar className="flex items-center justify-evenly">
+            <PromptInputActionMenu>
+              <PromptInputActionMenuTrigger />
+              <PromptInputActionMenuContent>
+                <PromptInputActionAddAttachments />
+              </PromptInputActionMenuContent>
+            </PromptInputActionMenu>
+
+            <PromptInputButton
+              variant={webSearch ? "default" : "ghost"}
+              onClick={() => setWebSearch(!webSearch)}
+              className="hidden sm:flex"
+            >
+              <GlobeIcon size={16} />
+              <span>Search</span>
+            </PromptInputButton>
+
+            <PromptInputButton
+              variant={webSearch ? "default" : "ghost"}
+              onClick={() => setWebSearch(!webSearch)}
+              className="sm:hidden"
+            >
+              <GlobeIcon size={16} />
+            </PromptInputButton>
+
+            <div className="hidden sm:block">
               <PromptInputModelSelect
                 onValueChange={(value) => {
                   setModel(value);
@@ -314,7 +325,31 @@ const ChatComponent = (props: ChatComponentProps) => {
                   ))}
                 </PromptInputModelSelectContent>
               </PromptInputModelSelect>
-            </PromptInputTools>
+            </div>
+
+            <div className="sm:hidden">
+              <PromptInputModelSelect
+                onValueChange={(value) => {
+                  setModel(value);
+                }}
+                value={model}
+              >
+                <PromptInputModelSelectTrigger>
+                  <PromptInputModelSelectValue />
+                </PromptInputModelSelectTrigger>
+                <PromptInputModelSelectContent>
+                  {models.map((model) => (
+                    <PromptInputModelSelectItem
+                      key={model.value}
+                      value={model.value}
+                    >
+                      {model.name}
+                    </PromptInputModelSelectItem>
+                  ))}
+                </PromptInputModelSelectContent>
+              </PromptInputModelSelect>
+            </div>
+
             <PromptInputSubmit disabled={!input && !status} status={status} />
           </PromptInputToolbar>
         </PromptInput>
