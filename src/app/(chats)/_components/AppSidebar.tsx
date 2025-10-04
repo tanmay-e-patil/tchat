@@ -43,6 +43,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSidebar } from "@/components/ui/sidebar";
 
 interface AppSidebarProps {
   session: Session | null;
@@ -55,6 +56,7 @@ export function AppSidebar({
 }: AppSidebarProps & React.ComponentProps<typeof Sidebar>) {
   const { chats, updateChat } = useChatContext();
   const [isUpdating, setIsUpdating] = React.useState<string | null>(null);
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const userData = {
     email: session?.user.email ?? "",
@@ -90,6 +92,12 @@ export function AppSidebar({
     }
   }
 
+  const handleMobileSidebarClose = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
+
   return (
     <TooltipProvider>
       <Sidebar variant="inset" {...props}>
@@ -119,7 +127,7 @@ export function AppSidebar({
                 variant="outline"
                 className="flex items-center justify-center text-center text-foreground border mb-2 bg-blue-700 hover:bg-blue-700/80"
               >
-                <Link href={`/chat/new`}>
+                <Link href={`/chat/new`} onClick={handleMobileSidebarClose}>
                   <span>New Chat</span>
                 </Link>
               </SidebarMenuButton>
@@ -128,7 +136,10 @@ export function AppSidebar({
             {chats.map((item) => (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton asChild>
-                  <Link href={`/chat/${item.id}`}>
+                  <Link
+                    href={`/chat/${item.id}`}
+                    onClick={handleMobileSidebarClose}
+                  >
                     {isUpdating === item.id ? (
                       <Skeleton className="h-4 w-full" />
                     ) : (

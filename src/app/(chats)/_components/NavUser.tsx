@@ -20,7 +20,7 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
   const router = useRouter();
 
   return (
@@ -29,7 +29,12 @@ export function NavUser({
         <SidebarMenuButton
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-          onClick={() => router.push("/settings/account")}
+          onClick={() => {
+            if (isMobile) {
+              setOpenMobile(false);
+            }
+            router.push("/settings/account");
+          }}
         >
           <Avatar className="h-8 w-8 rounded-full">
             <AvatarImage
