@@ -119,10 +119,7 @@ const ChatComponent = (props: ChatComponentProps) => {
         errorMessage.toLowerCase().includes("limit") ||
         errorMessage.includes("Free plan limit exceeded")
       ) {
-        // setLimitError(
-        //   "Free plan limit exceeded. Please upgrade to Pro for more messages."
-        // );
-        console.log(error.cause);
+
         toast.error(
           "Free plan limit exceeded. Please upgrade to Pro for more messages.",
           {
