@@ -213,4 +213,12 @@
   .transition-slow {
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* Privacy blur utilities */
+  .privacy-on .pii-blur {
+    filter: blur(6px);
+  }
+  .privacy-on .pii-blur-hard {
+    filter: blur(10px);
+  }
 }

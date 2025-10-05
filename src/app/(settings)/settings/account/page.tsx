@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import PrivacyToggle from "./privacy-toggle";
 
 export default async function AccountPage() {
   const session = await auth.api.getSession({
@@ -66,6 +67,17 @@ export default async function AccountPage() {
           </TabsList>
           <TabsContent value="account">
             <div className="flex flex-col gap-8 py-6">
+              <section className="rounded-xl border bg-card text-card-foreground p-4 sm:p-6 shadow-sm">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-lg font-semibold">Privacy Mode</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Blur personal info (email) in the UI for screenshots.
+                    </p>
+                  </div>
+                  <PrivacyToggle />
+                </div>
+              </section>
               <section className="rounded-xl border bg-card text-card-foreground p-4 sm:p-6 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
                   <div>

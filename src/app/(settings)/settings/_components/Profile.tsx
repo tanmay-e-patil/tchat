@@ -67,7 +67,7 @@ export default function Profile(props: ProfileProps) {
   };
   return (
     <div className="md:max-w-[20%] sm:w-full mx-8">
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center pii-blur">
         <Image
           src={profileImageUrl}
           alt={"Profile image"}
