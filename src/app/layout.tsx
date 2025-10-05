@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import { PrivacyHydrator } from "@/components/PrivacyHydrator";
 
 export const metadata: Metadata = {
   title: "TChat",
@@ -87,6 +88,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <PrivacyHydrator />
           {children}
           <Toaster position="top-center" richColors />
         </ThemeProvider>

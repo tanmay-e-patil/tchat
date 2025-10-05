@@ -88,12 +88,12 @@ export default function LoginPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
-                  <Button asChild size="lg">
-                    {/* Primary CTA uses existing auth flow */}
-                    <span>
-                      <LoginButton />
-                    </span>
-                  </Button>
+                  {/* <Button asChild size="lg"> */}
+                  {/* Primary CTA uses existing auth flow */}
+                  <span>
+                    <LoginButton width={100} text="Get Started" />
+                  </span>
+                  {/* </Button> */}
                   <Button variant="outline" size="lg" asChild>
                     <a href="#how-it-works">See how it works</a>
                   </Button>

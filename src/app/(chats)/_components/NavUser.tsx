@@ -36,7 +36,7 @@ export function NavUser({
             router.push("/settings/account");
           }}
         >
-          <Avatar className="h-8 w-8 rounded-full">
+          <Avatar className="h-8 w-8 rounded-full pii-blur">
             <AvatarImage
               src={user.avatar}
               alt={user.name}
@@ -45,7 +45,7 @@ export function NavUser({
             <AvatarFallback className="rounded-full">CN</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">{user.name}</span>
+            <span className="truncate font-medium pii-blur">{user.name}</span>
             <span className="truncate text-xs pii-blur">{user.email}</span>
           </div>
           <ChevronsUpDown className="ml-auto size-4" />
