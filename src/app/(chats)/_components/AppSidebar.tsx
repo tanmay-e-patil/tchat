@@ -41,7 +41,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSidebar } from "@/components/ui/sidebar";
 
@@ -54,9 +54,12 @@ export function AppSidebar({
   session,
   ...props
 }: AppSidebarProps & React.ComponentProps<typeof Sidebar>) {
-  const { chats, updateChat } = useChatContext();
+  const { chats, updateChat, setChats } = useChatContext();
   const [isUpdating, setIsUpdating] = React.useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = React.useState<string | null>(null);
   const { isMobile, setOpenMobile } = useSidebar();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const userData = {
     email: session?.user.email ?? "",
@@ -97,6 +100,38 @@ export function AppSidebar({
       setOpenMobile(false);
     }
   };
+
+  async function handleDelete(chatId: string): Promise<void> {
+    setIsDeleting(chatId);
+    const previousChats = chats;
+    // optimistic remove
+    setChats(chats.filter((c) => (c.id === chatId ? false : true)));
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chatId, userId: chats[0].userId }),
+      });
+
+      if (!response.ok) {
+        // revert on failure
+        setChats(previousChats);
+        console.error("Failed to delete chat");
+        return;
+      }
+
+      // navigate away if we are viewing the deleted chat
+      if (pathname && pathname.startsWith(`/chat/${chatId}`)) {
+        router.push("/chat/new");
+      }
+    } catch (error) {
+      setChats(previousChats);
+      console.error("Error deleting chat:", error);
+    } finally {
+      setIsDeleting(null);
+    }
+  }
 
   return (
     <TooltipProvider>
@@ -172,9 +207,16 @@ export function AppSidebar({
                           : "Update Title"}
                       </span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleDelete(item.id)}
+                      disabled={isDeleting === item.id}
+                    >
                       <Trash2 />
-                      <span>Delete Thread</span>
+                      <span>
+                        {isDeleting === item.id
+                          ? "Deleting..."
+                          : "Delete Thread"}
+                      </span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

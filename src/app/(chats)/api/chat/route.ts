@@ -126,3 +126,34 @@ export async function POST(req: Request) {
     },
   });
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { chatId, userId } = (await req.json()) as {
+      chatId?: string;
+      userId?: string;
+    };
+
+    if (!chatId || !userId) {
+      return NextResponse.json(
+        { error: "chatId and userId are required" },
+        { status: 400 }
+      );
+    }
+
+    // Ensure the chat belongs to the requesting user and delete it.
+    const result = await db
+      .delete(chats)
+      .where(and(eq(chats.id, chatId), eq(chats.userId, userId)))
+      .execute();
+
+    // Drizzle returns an array of results depending on driver; treat as success if no error thrown
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Error deleting chat:", error);
+    return NextResponse.json(
+      { error: "Failed to delete chat" },
+      { status: 500 }
+    );
+  }
+}
