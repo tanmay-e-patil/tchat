@@ -100,47 +100,19 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Right: Auth Card */}
-              {/* <Card className="border-muted">
-                <CardHeader>
-                  <CardTitle>Welcome to TChat</CardTitle>
-                  <CardDescription>
-                    Sign in to start your first conversation.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="rounded-lg border bg-muted/20 p-4 flex items-center gap-4">
-                    <Image
-                      src="/next.svg"
-                      alt="Preview"
-                      width={32}
-                      height={32}
-                    />
-                    <div className="text-sm text-muted-foreground">
-                      Lightning-fast UI powered by Next.js and modern tooling.
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src="/vercel.svg"
-                      alt="Deploy"
-                      width={24}
-                      height={24}
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Deploy-ready and privacy-friendly by default.
-                    </p>
-                  </div>
-                  <Separator />
-                  <div className="space-y-2">
-                    <p className="text-sm font-medium">Get started</p>
-                    <LoginButton />
-                  </div>
-                </CardContent>
-                <CardFooter className="text-sm text-muted-foreground">
-                  By continuing you agree to our terms and privacy policy.
-                </CardFooter>
-              </Card> */}
+              {/* Right: Sample Page Image */}
+              <div className="flex justify-center items-center">
+                <div className="relative">
+                  <Image
+                    src="/sample_page.png"
+                    alt="TChat Sample Interface"
+                    width={600}
+                    height={400}
+                    className="rounded-lg border shadow-lg"
+                    priority
+                  />
+                </div>
+              </div>
             </div>
 
             {/* How it works anchor */}
