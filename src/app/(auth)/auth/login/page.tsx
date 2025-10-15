@@ -1,20 +1,9 @@
-import { AppSidebar } from "@/app/(chats)/_components/AppSidebar";
 import { LoginButton } from "@/app/(chats)/_components/LoginButton";
 import { ModeToggle } from "@/components/theme-toggle";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ChatProvider } from "@/contexts/ChatContext";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
@@ -95,7 +84,9 @@ export default function LoginPage() {
                   </span>
                   {/* </Button> */}
                   <Button variant="outline" size="lg" asChild>
-                    <a href="#how-it-works">See how it works</a>
+                    <a href="https://github.com/tanmay-e-patil/tchat">
+                      See how it works
+                    </a>
                   </Button>
                 </div>
               </div>
