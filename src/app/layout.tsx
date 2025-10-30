@@ -78,6 +78,13 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <script
+          src="https://rybbit.tanmayep.dev/api/script.js"
+          data-site-id="4"
+          defer
+          data-track-errors="true"
+          data-session-replay="true"
+        ></script>
       </head>
       <body
         className={`${notoSans.className} antialiased h-screen overflow-hidden`}
