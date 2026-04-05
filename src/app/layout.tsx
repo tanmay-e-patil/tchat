@@ -80,7 +80,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <script
           src="https://rybbit.tanmayep.dev/api/script.js"
-          data-site-id="4"
+          data-site-id="5"
           defer
           data-track-errors="true"
           data-session-replay="true"
